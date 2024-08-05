@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <title>TimeTableMaker</title>
+
+  <!--BOOTSTRAP-->
+  <link rel="stylesheet" href=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity=
+"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous">
+
+  <!--COLOR PALETTE-->
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+
+  <!--CUSTOM STYLES-->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ttm.css') }}">
+
+
+  
+  
+  <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+  </script>
+  <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+  </script>
+  <script src=
+"https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+
+  <!--CUSTOM JS-->
+  
+  <script src = "{{ url_for('static', filename='js/printThis.js') }}"></script>
+  <script src = "{{ url_for('static', filename='js/TTM.js') }}"></script>
+
+</head>
+  
+<!--style="background-color: #EADBC8;"-->
+
+<body>
+
+  
+
+  <h1 style="margin: 10px; margin-left: 20px;">Time Table Maker</h1>
+
+  <div class="d-flex flex-row" style="margin-left: 24.5px;margin-top: 10px;">
+    <div class="p-2">
+        <!-- Button to show manual timetable maker section -->
+        <button class="btn btn-default btn-outline-dark toggleBtn1" data-target="manual-time-table">Manual Timetable</button>
+    </div>
+    <div class="p-2">
+        <!-- Button to show AI-generated timetable section -->
+        <button class="btn btn-default btn-outline-dark toggleBtn2" data-target="ai-generated">Timetable Generator</button>
+    </div>
+   </div>
+
+
+  <!--FLEXBOX FOR ALL OPTIONS-->
+  <div id = "manual-time-table" class = "container mt-5 toggle-section-manual">
+    <div class="d-flex flex-row" style="margin-left: 24.5px;margin-top: 10px;">
+      <div class="p-2"><button class = " btn btn-default btn=btn-outline-dark  boldBtn pull-left opt"><b>Bold</b></button></div>
+      <div class="p-2"><button class = " btn btn-default btn=btn-outline-dark italicBtn pull-left opt"><i>Italic</i></button></div>
+      <div class="p-2"><button class = "   btn btn-default btn=btn-outline-dark underlineBtn pull-left opt"><u>Underline</u></button></div>
+      <div class="p-2"><button class = " btn btn-default  btn=btn-outline-dark colorBtn pull-left opt" ><img src="{{ url_for('static', filename='images/fill2.png') }}" alt="" height = "10" width = "10" style="height: 10%;  width:10%; color: #f1f0e8;"></button></div>
+      <div class="p-2"><button class = " btn btn-default btn=btn-outline-dark downloadBtn pull-left opt">Download</button></div>
+      <div class="p-2"><button class = " btn btn-default btn=btn-outline-dark resetBtn pull-left opt" id = "resetButton">Reset Values</button></div>
+      
+    </div>
+
+    
+
+    <div class="container pt-4 " style="padding-left: 0;padding-right: 0;margin-left: 24.5px;">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover manual-table" id = "content" >
+          <thead>
+            <tr>
+              <th class="text-center">
+                  Timings
+              </th>
+              <th class="text-center">
+                  Monday
+              </th>
+              <th class="text-center">
+                  Tuesday
+              </th>
+              <th class="text-center">
+                  Wednesday
+              </th>
+              <th class="text-center">
+                  Thursday
+              </th>
+              <th class="text-center">
+                  Friday
+              </th>
+              <th class="text-center">
+                  Saturday
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+    
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn-default btn-outline-dark pull-left mantb" 
+        id="addBtn" type="button">
+          Add New Row
+      </button>
+      <button type="button" class="btn btn-outline-dark mantb" id="resetManualTable">Reset Table</button>
+    </div>
+
+  </div>
+
+  <!--AI GENERATED TIMETABLE DETAILS FORM-->
+
+  <div class="container mt-5 toggle-section-ai" id = "ai-generated">
+    <h2>Customized Timetable Generator Form</h2>
+    <form action="/generate_timetable" method="post">
+      <div class="form-group">
+          <label for="days">Number of Study Days per Week:</label>
+          <input type="number" class="form-control" id="days" name="days" required min = "1" max="7">
+      </div>
+      
+        <div class = "form-group">
+            
+            <label for="pfst">Preferred Start Timing:</label>
+            <input type="time" class="form-control" id="preferredStartTiming" name="pfst" >
+        </div>
+        <div class = "form-group">
+            <label for="pfet">Preferred End Timing:</label>
+            <input type="time" class="form-control" id="preferredEndTiming" name="pfet" >
+
+        </div>
+
+        <div class="form-group">
+          <label for="reps">Maximum Number of Repetitions per Subject per Day:</label>
+          <input type="number" class="form-control" id="reps" name="reps">
+      </div>
+
+        <div class="form-group">
+            <label for="numSubjects">Number of Subjects:</label>
+            <input type="number" class="form-control" id="numSubjects" name="numSubjects" required>
+        </div>
+
+        <div id="subjectFields">
+            <!-- Dynamic subject input fields will be generated here -->
+        </div>
+        <button type="submit" class="btn btn-outline-dark aiformbt" id = "generateTimeTable">Generate Timetable</button>
+        <button type="button" class="btn btn-outline-dark aiformbt" id="addSubject">Add Subjects</button>
+        <button type="button" class="btn btn-outline-dark aiformbt" id="resetForm">Reset Form</button>
+    </form>
+
+  </div>
+
+</body>
+  
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='css/answer.css') }}" rel="stylesheet">
+    <script src= "https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+      <script src=
+    "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+      </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class = "preloader">
+    <svg class="ip" viewBox="0 0 256 128" width="256px" height="128px" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#5ebd3e" />
+          <stop offset="33%" stop-color="#ffb900" />
+          <stop offset="67%" stop-color="#f78200" />
+          <stop offset="100%" stop-color="#e23838" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%" stop-color="#e23838" />
+          <stop offset="33%" stop-color="#973999" />
+          <stop offset="67%" stop-color="#009cdf" />
+          <stop offset="100%" stop-color="#5ebd3e" />
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke-linecap="round" stroke-width="16">
+        <g class="ip__track" stroke="#ddd">
+          <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+          <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+        </g>
+        <g stroke-dasharray="180 656">
+          <path class="ip__worm1" stroke="url(#grad1)" stroke-dashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56"/>
+          <path class="ip__worm2" stroke="url(#grad2)" stroke-dashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64"/>
+        </g>
+      </g>
+    </svg>
+    
+  </div>
+  
+  <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary navbar-light" style="background-color: #96B6C5;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='images/mascot.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+            StudyBuddy
+        </a>  
+    </div>
+        <button type="submit" class="Login-Button btn btn-primary btn-outline-success">
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </button>
+        <button type="submit" class="Login-Button btn btn-primary btn-outline-success">
+          <a href="{{ url_for('views.home') }}">Home</a>
+      </button>
+        
+    </nav>
+
+
+    <div class="container">
+      <div class="content-box">
+        <div class="upload-section">
+          <!-- Add a drop zone for drag and drop -->
+          <div class="drop-zone" id="dropZone">
+            <p>Drag &amp; Drop</p>
+          </div>
+          <!-- Add an input field for file selection -->
+          <form action="/answergen" method="post" enctype="multipart/form-data" class="file-upload-form">
+            <input type="file" name="pdf_file" class="file-input" id="pdfUpload" accept=".pdf" style="display: none;">
+            <!-- Label for the file input -->
+            <label for="pdfUpload" class="upload-label">
+              <span>Or click here to select a PDF</span>
+            </label>
+            <input type="submit" value="Submit" class="submit-button" style=" bottom: 0;">
+          </form>
+        </div>
+    
+        <div class="text-section">
+          <h2 style="font-family: Montserrate;">Questions and Answers</h2>
+          <div class="scrollable-text" id="scrollableText">
+            <!-- Display text content here -->
+            <p style="font-family: Montserrate;">{{ questions_and_answers }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.addEventListener("load", function () {
+          var loaderWrapper = document.querySelector(".preloader");
+          var content = document.querySelector(".ip");
+
+          // Hide the loading animation
+          loaderWrapper.style.display = "none";
+
+          // Show the content
+          content.style.display = "block";
+      });
+      function showLoadingAnimation() {
+            var loaderWrapper = document.querySelector(".preloader");
+            var content = document.querySelector(".ip");
+            loaderWrapper.style.display = "block";
+            content.style.display = "none";
+        }
+
+        // Function to hide the loading animation
+      function hideLoadingAnimation() {
+            var loaderWrapper = document.querySelector(".preloader");
+            var content = document.querySelector(".ip");
+            loaderWrapper.style.display = "none";
+            content.style.display = "block";
+        }
+
+        // Function to simulate a backend operation (e.g., fetching data)
+        function simulateBackendOperation() {
+            showLoadingAnimation();
+
+            // Simulate an asynchronous request to your backend
+            fetch("/your-backend-endpoint")
+                .then(response => response.text())
+                .then(data => {
+                    // Assuming data is available, hide the loading animation
+                    if (data) {
+                        hideLoadingAnimation();
+                        // Update the content with the fetched data
+                        var scrollableText = document.querySelector(".scrollable-text");
+                        scrollableText.innerHTML = data;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Handle errors if needed
+                });
+        }
+
+        // Event listener for the Submit button
+        var submitBtn = document.getElementById("submitBtn");
+        submitBtn.addEventListener("click", function () {
+            simulateBackendOperation();
+        });
+    </script>
+
+</body>
+</html>

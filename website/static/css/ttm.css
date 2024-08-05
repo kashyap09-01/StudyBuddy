@@ -1,0 +1,32 @@
+body{
+    background-color: #f1f0e7;
+}
+
+.manual-table,.aitb{
+    background-color: #97b1c1;/*rgb(219, 217, 207);*/
+    color: black;
+    border-color: black;
+}
+
+.aitb{
+    color:white;
+}
+
+h1,h2{
+    color: #102c57;
+    opacity: 80%;
+}
+
+.opt,.aiformbt,.mantb,.aib{
+    background-color: #fad254;
+    color: black;
+}
+
+.toggleBtn1,.toggleBtn2{
+    background-color: #97b1c1;
+    color: #f1f0e7;
+}
+
+thead{
+    color: #f1f0e7;
+}

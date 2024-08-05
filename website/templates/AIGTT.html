@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Custom Generated Timetable</title>
+
+  <!--BOOTSTRAP-->
+  <link rel="stylesheet" href=
+"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity=
+"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+    crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ttm.css') }}">
+  
+  <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+  </script>
+  <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+  </script>
+  <script src=
+"https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+  
+
+  <script src = "{{ url_for('static', filename='js/printThis.js') }}"></script>
+  <script src = "{{ url_for('static', filename='js/AIGTT.js') }}"></script>
+
+</head>
+<body>
+    <h1 style="margin: 10px; margin-left: 20px;">Custom Generated Timetable</h1>
+    
+    <div id = "manual-time-table" class = "container mt-5 toggle-section-manual contentgt">
+        <table class="table table-bordered aitb">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Hourly Subject Slots from {{info["pfst"]}} to {{info["pfet"]}}</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for i in range(1, d+1) %}
+                  <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ duplicate_list[i - 1] | join(' | ') }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+    </div>
+
+    <div id = "subject-code-table" class = "container mt-5 toggle-section-manual contentgt">
+        <table class="table table-bordered aitb">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0</td>
+                    <td>Free Hour (if any)</td>
+                </tr>
+                {% for i in range(1, e + 1) %}
+                  <tr>
+                    <td>{{ i }}</td>
+                    <td>{{ info["subjectNames"][i - 1] }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+    </div>
+
+    <div class="d-flex flex-row" style="margin-left: 24.5px;margin-top: 50px;">
+        <div class="p-2"><button class = " btn btn-default btn-outline-dark downloadBtn pull-left aib">Download</button></div>
+        <div class="p-2"><button class = " btn btn-default btn-outline-dark refreshBtn pull-left aib">Refresh</button></div>
+        
+      </div>
+    
+</body>
+</html>
